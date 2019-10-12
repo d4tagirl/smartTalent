@@ -15,14 +15,14 @@ library(purrr)
 
 # Bajo tweets que hablen de SmartTalentUY y miro los primeros
 
-tweets <- readRDS("tweets_hasta_4oct.rds")
+tweets <- readRDS("tweets_hasta_12oct.rds")
 
-tweets_nuevos <- rtweet::search_tweets(q = "@SmartTalentUY OR to:SmartTalentUY OR SmartTalentUY", 
-                                include_rts = FALSE) 
-
-tweets <- tweets %>% 
-  bind_rows(tweets_nuevos) %>% 
-  distinct(status_id, .keep_all= TRUE)
+# tweets_nuevos <- rtweet::search_tweets(q = "@SmartTalentUY OR to:SmartTalentUY OR SmartTalentUY", 
+#                                 include_rts = FALSE) 
+# 
+# tweets <- tweets %>% 
+#   bind_rows(tweets_nuevos) %>% 
+#   distinct(status_id, .keep_all= TRUE)
 
 head(tweets)
 # Extraigo la info de los usuarios que hablaron de SmartTalentUY:
@@ -37,7 +37,7 @@ set.seed(16995145)
 wordcloud(users, colors = viridis::viridis_pal(end = 0.8)(10),
           min.freq = 1,
           random.color = TRUE, max.words = 100,
-          scale = c(2.5,.2), rot.per=.3)
+          scale = c(2,.2), rot.per=.3)
 
 
 # Selecciono las palabras comúnes como "el", "es", "la" para que no las tome en cuenta:
@@ -63,8 +63,8 @@ words_used <- toString(words$word) %>%
 set.seed(16993512)
 wordcloud(words_used, colors = viridis::viridis_pal(end = 0.8)(10),
           min.freq = 2, random.color = TRUE, 
-          # max.words = 40,
-          scale = c(3.5,.4),
+          max.words = 150,
+          scale = c(2.6,.5),
           rot.per=.2)
 
 # Preparo los datos para armar la red de los mencionados en los Tweets:
@@ -90,12 +90,5 @@ data_frame(users = mentioned_users$mentions, status_id = mentioned_users$status_
 
 # Y ésto es lo que se ve 🎉
 
-set.seed(16995145)
-wordcloud(mentioned_users$mentions, colors = viridis::viridis_pal(end = 0.8)(10),
-          min.freq = 700, random.color = TRUE, max.words = 60,
-          scale = c(3.5,0.5),
-          rot.per=.3)
-
-
-# saveRDS(tweets, "tweets_hasta_11oct.rds")
+# saveRDS(tweets, "tweets_hasta_12oct.rds")
 
